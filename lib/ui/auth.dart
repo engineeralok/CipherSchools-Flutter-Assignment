@@ -22,7 +22,7 @@ class SignUpScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SignUpForm(),
+                    SignUpForm(),
 
                     Center(
                       child: Text(

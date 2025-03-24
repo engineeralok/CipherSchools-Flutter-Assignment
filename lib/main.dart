@@ -3,7 +3,6 @@ import 'package:cipherschools_flutter_assignment/prov/auth.dart';
 import 'package:cipherschools_flutter_assignment/prov/navigation.dart';
 import 'package:cipherschools_flutter_assignment/prov/onboarding.dart';
 import 'package:cipherschools_flutter_assignment/prov/transaction.dart';
-import 'package:cipherschools_flutter_assignment/ui/home.dart';
 import 'package:cipherschools_flutter_assignment/ui/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,16 +35,14 @@ class MyApp extends StatelessWidget {
             (context) =>
                 Image.asset(Assets.backIcon.path, height: 32, width: 32),
       ),
-       
-      
+
       elevatedButtonTheme: ElevatedButtonThemeData(
-        
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 17),
           fixedSize: Size.copy(const Size(double.maxFinite, 56)),
           surfaceTintColor: Colors.deepPurpleAccent.shade700,
           disabledBackgroundColor: Colors.deepPurple.shade200,
-        
+
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: BorderSide(color: Colors.purple.withAlpha(60), width: 1),
@@ -97,6 +94,30 @@ class MyApp extends StatelessWidget {
           borderSide: BorderSide(
             color: Colors.purple.withAlpha(60),
             width: 1,
+            style: BorderStyle.solid,
+          ),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.purple.withAlpha(60),
+            width: 1,
+            style: BorderStyle.solid,
+          ),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+            width: 1,
+            style: BorderStyle.solid,
+          ),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+            width: 2,
             style: BorderStyle.solid,
           ),
           borderRadius: BorderRadius.circular(16),

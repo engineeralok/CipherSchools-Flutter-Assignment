@@ -1,3 +1,4 @@
+import 'package:cipherschools_flutter_assignment/wgt/common.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../prov/navigation.dart';
@@ -5,7 +6,6 @@ import '../ui/profile.dart';
 import '../ui/statistics.dart';
 import '../wgt/home.dart';
 import '../wgt/add_transaction.dart';
-import '../wgt/bottom_navigation.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

@@ -20,17 +20,36 @@ class SignUpForm extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            TextField(
+            TextFormField(
               controller: provider.emailController,
-              decoration: const InputDecoration(labelText: "Email"),
+              decoration: const InputDecoration(
+                labelText: "Email",
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.emailAddress,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Email cannot be empty";
+                }
+                final emailRegex = RegExp(
+                  r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                );
+                if (!emailRegex.hasMatch(value)) {
+                  return "Enter a valid email address";
+                }
+                return null;
+              },
             ),
+
             const SizedBox(height: 24),
 
-            TextField(
+            TextFormField(
               controller: provider.passwordController,
               obscureText: !provider.isPasswordVisible,
               decoration: InputDecoration(
                 labelText: "Password",
+                border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: Icon(
                     provider.isPasswordVisible
@@ -40,7 +59,18 @@ class SignUpForm extends StatelessWidget {
                   onPressed: provider.togglePasswordVisibility,
                 ),
               ),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Password cannot be empty";
+                }
+                if (value.length < 8) {
+                  return "Password must be at least 8 characters long";
+                }
+                return null;
+              },
             ),
+
             const SizedBox(height: 17),
 
             Row(
@@ -102,10 +132,17 @@ class SignUpForm extends StatelessWidget {
                         final success =
                             await provider.signUpWithEmailAndPassword();
                         if (success && context.mounted) {
+                          provider.nameController.clear();
+                          provider.emailController.clear();
+                          provider.passwordController.clear();
+                          provider.isChecked = false;
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => const HomeScreen(),
                             ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Sign Up Successful")),
                           );
                         } else if (context.mounted &&
                             provider.errorMessage != null) {
@@ -150,17 +187,34 @@ class LoginForm extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
+            TextFormField(
               controller: provider.emailController,
-              decoration: const InputDecoration(labelText: "Email"),
+              decoration: const InputDecoration(
+                labelText: "Email",
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.emailAddress,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Email cannot be empty";
+                }
+                final emailRegex = RegExp(
+                  r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                );
+                if (!emailRegex.hasMatch(value)) {
+                  return "Enter a valid email address";
+                }
+                return null;
+              },
             ),
             const SizedBox(height: 24),
-
-            TextField(
+            TextFormField(
               controller: provider.passwordController,
               obscureText: !provider.isPasswordVisible,
               decoration: InputDecoration(
                 labelText: "Password",
+                border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: Icon(
                     provider.isPasswordVisible
@@ -170,6 +224,16 @@ class LoginForm extends StatelessWidget {
                   onPressed: provider.togglePasswordVisibility,
                 ),
               ),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Password cannot be empty";
+                }
+                if (value.length < 8) {
+                  return "Password must be at least 8 characters long";
+                }
+                return null;
+              },
             ),
             const SizedBox(height: 20),
 
@@ -188,10 +252,17 @@ class LoginForm extends StatelessWidget {
                         final success =
                             await provider.signInWithEmailAndPassword();
                         if (success && context.mounted) {
+                          provider.nameController.clear();
+                          provider.emailController.clear();
+                          provider.passwordController.clear();
+                          provider.isChecked = false;
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => const HomeScreen(),
                             ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Login Successful")),
                           );
                         } else if (context.mounted &&
                             provider.errorMessage != null) {

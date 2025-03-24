@@ -1,10 +1,15 @@
+import 'package:cipherschools_flutter_assignment/prov/navigation.dart';
+import 'package:cipherschools_flutter_assignment/ui/onboarding.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../prov/auth.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var navigationProvider = context.read<NavigationProvider>();
     return Scaffold(
       backgroundColor: const Color(0xFFF6F6F6),
       body: SafeArea(
@@ -67,7 +72,47 @@ class ProfileScreen extends StatelessWidget {
                   _buildMenuItem(
                     icon: Icons.logout_outlined,
                     title: 'Logout',
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder:
+                            (context) => AlertDialog(
+                              title: const Text('Logout'),
+                              content: const Text(
+                                'Are you sure you want to logout?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    Navigator.pop(context);
+                                    await context.read<AuthProvider>().signOut(
+                                      navigationProvider,
+                                    );
+                                    if (context.mounted) {
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) =>
+                                                  const WalkthroughScreen(),
+                                        ),
+                                        (route) => false,
+                                      );
+                                    }
+                                  },
+                                  child: const Text(
+                                    'Logout',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              ],
+                            ),
+                      );
+                    },
                     isDestructive: true,
                   ),
                 ],
@@ -92,7 +137,7 @@ class ProfileScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(50),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),

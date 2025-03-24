@@ -1,3 +1,4 @@
+import 'package:cipherschools_flutter_assignment/prov/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -27,7 +28,8 @@ class AuthProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       isSignUpLoading = false;
-      errorMessage = e.toString();
+      debugPrint(e.toString());
+      errorMessage = 'Sign up failed. Please try again.';
       notifyListeners();
       return false;
     }
@@ -47,7 +49,8 @@ class AuthProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       isLoginLoading = false;
-      errorMessage = e.toString();
+      debugPrint(e.toString());
+      errorMessage = 'Login failed. Please try again.';
       notifyListeners();
       return false;
     }
@@ -57,14 +60,9 @@ class AuthProvider extends ChangeNotifier {
     try {
       isGoogleSignInLoading = true;
       notifyListeners();
-
-      // Set Firebase auth language
       await _auth.setLanguageCode("en");
 
-      // Ensure Google Sign-In is initialized
       await _googleSignIn.signOut();
-
-      // Start Google Sign-In process
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
         debugPrint("Google Sign-In cancelled by user.");
@@ -72,22 +70,16 @@ class AuthProvider extends ChangeNotifier {
         notifyListeners();
         return false;
       }
-
-      // Get authentication details
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-
-      // Sign in to Firebase with Google credentials
       final UserCredential userCredential = await _auth.signInWithCredential(
         credential,
       );
       user = userCredential.user;
-
-      // Ensure user is not null
       if (user == null) {
         debugPrint("Google Sign-In failed: User is null.");
         isGoogleSignInLoading = false;
@@ -109,10 +101,13 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut(NavigationProvider navigationProvider) async {
     await _auth.signOut();
     await _googleSignIn.signOut();
     user = null;
+    Future.microtask(() {
+      navigationProvider.setCurrentIndex(0);
+    });
     notifyListeners();
   }
 

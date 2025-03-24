@@ -58,7 +58,7 @@ class IncomeCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(5),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -113,7 +113,7 @@ class ExpenseCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(5),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -227,7 +227,7 @@ class TransactionItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(5),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -238,7 +238,7 @@ class TransactionItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: iconBackgroundColor.withOpacity(0.1),
+              color: iconBackgroundColor.withAlpha(10),
               borderRadius: BorderRadius.circular(15),
             ),
             child: Icon(icon, color: iconBackgroundColor),
@@ -288,35 +288,3 @@ class TransactionItem extends StatelessWidget {
     );
   }
 }
-
-// class HomeBottomNavigationBar extends StatelessWidget {
-//   const HomeBottomNavigationBar({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BottomAppBar(
-//       shape: const CircularNotchedRectangle(),
-//       notchMargin: 8,
-//       child: Container(
-//         height: 60,
-//         padding: const EdgeInsets.symmetric(horizontal: 16),
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [
-//             IconButton(icon: const Icon(Icons.home_outlined), onPressed: () {}),
-//             IconButton(
-//               icon: const Icon(Icons.pie_chart_outline),
-//               onPressed: () {},
-//             ),
-//             const SizedBox(width: 40),
-//             IconButton(icon: const Icon(Icons.history), onPressed: () {}),
-//             IconButton(
-//               icon: const Icon(Icons.person_outline),
-//               onPressed: () {},
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
