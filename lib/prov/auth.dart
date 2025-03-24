@@ -2,16 +2,58 @@ import 'package:cipherschools_flutter_assignment/prov/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../models/user_model.dart';
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   User? user;
+  UserModel? userModel;
   bool isLoading = false;
   bool isSignUpLoading = false;
   bool isLoginLoading = false;
   bool isGoogleSignInLoading = false;
   String? errorMessage;
+
+  AuthProvider() {
+    checkCurrentUser();
+  }
+
+  Future<void> checkCurrentUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? userId = prefs.getString('user_id');
+
+    if (userId != null) {
+      try {
+        final docSnapshot =
+            await _firestore.collection('users').doc(userId).get();
+        if (docSnapshot.exists) {
+          userModel = UserModel.fromMap(docSnapshot.data()!);
+          user = _auth.currentUser;
+          notifyListeners();
+        }
+      } catch (e) {
+        debugPrint('Error fetching user data: $e');
+      }
+    }
+  }
+
+  Future<void> _storeUserData(User user) async {
+    final userModel = UserModel(
+      uid: user.uid,
+      name: user.displayName ?? '',
+      email: user.email ?? '',
+      photoUrl: user.photoURL,
+    );
+
+    await _firestore.collection('users').doc(user.uid).set(userModel.toMap());
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_id', user.uid);
+    this.userModel = userModel;
+  }
 
   Future<bool> signUpWithEmailAndPassword() async {
     try {
@@ -87,6 +129,7 @@ class AuthProvider extends ChangeNotifier {
         return false;
       }
 
+      await _storeUserData(user!);
       debugPrint("Google Sign-In Successful: ${user!.email}");
 
       isGoogleSignInLoading = false;
@@ -104,7 +147,10 @@ class AuthProvider extends ChangeNotifier {
   Future<void> signOut(NavigationProvider navigationProvider) async {
     await _auth.signOut();
     await _googleSignIn.signOut();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('user_id');
     user = null;
+    userModel = null;
     Future.microtask(() {
       navigationProvider.setCurrentIndex(0);
     });
@@ -118,7 +164,7 @@ class AuthProvider extends ChangeNotifier {
   bool isPasswordVisible = false;
   bool isChecked = false;
 
-  AuthProvider() {
+  updateControllers() {
     nameController.addListener(_updateButtonState);
     emailController.addListener(_updateButtonState);
     passwordController.addListener(_updateButtonState);

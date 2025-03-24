@@ -55,8 +55,45 @@ class GoogleSignInButton extends StatelessWidget {
   }
 }
 
+class NavigationItem {
+  final IconData icon;
+  final int index;
+
+  const NavigationItem({required this.icon, required this.index});
+}
+
+class NavigationBarItem extends StatelessWidget {
+  final NavigationItem item;
+  final int currentIndex;
+  final Function(int) onTap;
+
+  const NavigationBarItem({
+    super.key,
+    required this.item,
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        item.icon,
+        color: currentIndex == item.index ? Colors.purple : Colors.grey,
+      ),
+      onPressed: () => onTap(item.index),
+    );
+  }
+}
+
 class HomeBottomNavigationBar extends StatelessWidget {
   const HomeBottomNavigationBar({super.key});
+
+  static const _navigationItems = [
+    NavigationItem(icon: Icons.home, index: 0),
+    NavigationItem(icon: Icons.bar_chart, index: 1),
+    NavigationItem(icon: Icons.person, index: 2),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -71,36 +108,20 @@ class HomeBottomNavigationBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.home,
-                    color:
-                        provider.currentIndex == 0
-                            ? Colors.purple
-                            : Colors.grey,
-                  ),
-                  onPressed: () => provider.setCurrentIndex(0),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.bar_chart,
-                    color:
-                        provider.currentIndex == 1
-                            ? Colors.purple
-                            : Colors.grey,
-                  ),
-                  onPressed: () => provider.setCurrentIndex(1),
-                ),
+                ..._navigationItems
+                    .take(2)
+                    .map(
+                      (item) => NavigationBarItem(
+                        item: item,
+                        currentIndex: provider.currentIndex,
+                        onTap: provider.setCurrentIndex,
+                      ),
+                    ),
                 const SizedBox(width: 40), // Space for FAB
-                IconButton(
-                  icon: Icon(
-                    Icons.person,
-                    color:
-                        provider.currentIndex == 2
-                            ? Colors.purple
-                            : Colors.grey,
-                  ),
-                  onPressed: () => provider.setCurrentIndex(2),
+                NavigationBarItem(
+                  item: _navigationItems.last,
+                  currentIndex: provider.currentIndex,
+                  onTap: provider.setCurrentIndex,
                 ),
               ],
             ),

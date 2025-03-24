@@ -1,8 +1,9 @@
-import 'package:cipherschools_flutter_assignment/prov/navigation.dart';
-import 'package:cipherschools_flutter_assignment/ui/onboarding.dart';
+import 'package:cipherschools_flutter_assignment/core/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../prov/auth.dart';
+import '../prov/navigation.dart';
+import '../ui/onboarding.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -11,67 +12,110 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var navigationProvider = context.read<NavigationProvider>();
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F6),
+      backgroundColor: Color(0xffF6F6F6),
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              width: double.infinity,
-              height: 200,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Colors.blue[700]!, Colors.blue[500]!],
-                ),
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
                 children: [
-                  const CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.person, size: 40, color: Colors.blue),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Khushi Sharma',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.purple,
+                        width: 2,
+                      ), // Border width & color
                     ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Colors.white,
+                        child: Image.asset(
+                          'assets/profile_image.png',
+                          errorBuilder:
+                              (context, error, stackTrace) =>
+                                  const Icon(Icons.person, size: 30),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Username',
+                        style: TextStyle(
+                          color: Color(0xFF90909F),
+                          fontSize: 14,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        'Khushi Sharma',
+                        style: TextStyle(
+                          color: Color(0xFF161719),
+                          fontSize: 24,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    icon: Image.asset(Assets.editIcon.path),
+                    onPressed: () {},
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+            const SizedBox(height: 16),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(10),
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
               child: Column(
                 children: [
                   _buildMenuItem(
-                    icon: Icons.person_outline,
+                    image: Assets.accountIcon.path,
                     title: 'Account',
+                    color: Colors.purple,
                     onTap: () {},
                   ),
+                  Divider(),
                   _buildMenuItem(
-                    icon: Icons.settings_outlined,
+                    image: Assets.settingsIcon.path,
                     title: 'Settings',
+                    color: Colors.deepPurpleAccent,
                     onTap: () {},
                   ),
+                  Divider(),
                   _buildMenuItem(
-                    icon: Icons.file_download_outlined,
+                    image: Assets.exportDataIcon.path,
                     title: 'Export Data',
+                    color: Colors.purpleAccent,
                     onTap: () {},
                   ),
+                  Divider(),
                   _buildMenuItem(
-                    icon: Icons.logout_outlined,
+                    image: Assets.logOutIcon.path,
                     title: 'Logout',
+                    color: Colors.red,
                     onTap: () {
                       showDialog(
                         context: context,
@@ -113,7 +157,6 @@ class ProfileScreen extends StatelessWidget {
                             ),
                       );
                     },
-                    isDestructive: true,
                   ),
                 ],
               ),
@@ -125,36 +168,25 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildMenuItem({
-    required IconData icon,
+    IconData? icon,
+    String? image,
     required String title,
+    required Color color,
     required VoidCallback onTap,
-    bool isDestructive = false,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(50),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: ListTile(
-        leading: Icon(icon, color: isDestructive ? Colors.red : Colors.blue),
-        title: Text(
-          title,
-          style: TextStyle(
-            color: isDestructive ? Colors.red : Colors.black87,
-            fontWeight: FontWeight.w500,
-          ),
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 17, vertical: 14),
+      leading: image != null ? Image.asset(image) : Icon(icon, color: color),
+      title: Text(
+        title,
+        style: const TextStyle(
+          color: Color(0xFF292B2D),
+          fontSize: 16,
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.w500,
         ),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: onTap,
       ),
+      onTap: onTap,
     );
   }
 }

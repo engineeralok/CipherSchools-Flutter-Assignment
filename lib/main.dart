@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
             (context) =>
                 Image.asset(Assets.backIcon.path, height: 32, width: 32),
       ),
+      dividerTheme: DividerThemeData(color: Color(0xffF6F6F6), thickness: 1),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
