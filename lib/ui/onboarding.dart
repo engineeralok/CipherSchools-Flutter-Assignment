@@ -156,8 +156,8 @@ class WalkthroughScreen extends StatelessWidget {
                                 );
                               },
                               child: Container(
-                                width: 90.0,
-                                height: 90.0,
+                                width: 80.0,
+                                height: 80.0,
                                 decoration: BoxDecoration(
                                   color: const Color(0xBFECE1E1),
                                   shape: BoxShape.circle,

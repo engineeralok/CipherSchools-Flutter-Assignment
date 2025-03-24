@@ -37,9 +37,10 @@ class MyApp extends StatelessWidget {
           fixedSize: Size.copy(const Size(double.maxFinite, 56)),
           surfaceTintColor: Colors.deepPurpleAccent.shade700,
           disabledBackgroundColor: Colors.deepPurple.shade200,
+
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
-            side: BorderSide(color: Colors.deepPurpleAccent, width: 2),
+            side: BorderSide(color: Colors.purple.withAlpha(60), width: 1),
           ),
           shadowColor: Colors.deepPurpleAccent,
           elevation: 0,
