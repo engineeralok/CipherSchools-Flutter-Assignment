@@ -1,3 +1,4 @@
+import 'package:cipherschools_flutter_assignment/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cipherschools_flutter_assignment/prov/auth.dart';
@@ -96,13 +97,38 @@ class SignUpForm extends StatelessWidget {
                 ),
               ),
               onPressed:
-                  provider.isButtonEnabled
-                      ? () {}
-                      : null, // Enable button conditionally
-              child: const Text(
-                "Sign Up",
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
+                  provider.isButtonEnabled && !provider.isSignUpLoading
+                      ? () async {
+                        final success =
+                            await provider.signUpWithEmailAndPassword();
+                        if (success && context.mounted) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ),
+                          );
+                        } else if (context.mounted &&
+                            provider.errorMessage != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(provider.errorMessage!)),
+                          );
+                        }
+                      }
+                      : null,
+              child:
+                  provider.isSignUpLoading
+                      ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                      : const Text(
+                        "Sign Up",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
             ),
 
             const SizedBox(height: 17),
@@ -156,13 +182,36 @@ class LoginForm extends StatelessWidget {
               ),
               onPressed:
                   provider.emailController.text.trim().isNotEmpty &&
-                          provider.passwordController.text.trim().isNotEmpty
-                      ? () {}
-                      : null, // Enable button conditionally
-              child: const Text(
-                "Login",
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
+                          provider.passwordController.text.trim().isNotEmpty &&
+                          !provider.isLoginLoading
+                      ? () async {
+                          final success = await provider.signInWithEmailAndPassword();
+                          if (success && context.mounted) {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const HomeScreen(),
+                              ),
+                            );
+                          } else if (context.mounted && provider.errorMessage != null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(provider.errorMessage!)),
+                            );
+                          }
+                        }
+                      : null,
+              child: provider.isLoginLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : const Text(
+                      "Login",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
             ),
             const SizedBox(height: 17),
           ],

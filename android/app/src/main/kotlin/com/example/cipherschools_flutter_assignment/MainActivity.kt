@@ -1,4 +1,4 @@
-package com.example.cipherschools_flutter_assignment
+package com.cipherschools.assignment
 
 import io.flutter.embedding.android.FlutterActivity
 

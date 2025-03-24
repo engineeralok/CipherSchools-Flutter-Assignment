@@ -1,12 +1,15 @@
 import 'package:cipherschools_flutter_assignment/core/assets.dart';
 import 'package:cipherschools_flutter_assignment/prov/auth.dart';
 import 'package:cipherschools_flutter_assignment/prov/onboarding.dart';
+import 'package:cipherschools_flutter_assignment/prov/transaction.dart';
 import 'package:cipherschools_flutter_assignment/ui/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -99,6 +102,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => SplashScreenProvider()),
         ChangeNotifierProvider(create: (context) => SignUpProvider()),
+        ChangeNotifierProvider(create: (context) => TransactionProvider()),
       ],
       child: MaterialApp(
         theme: appTheme,

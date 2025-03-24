@@ -1,5 +1,6 @@
 import 'package:cipherschools_flutter_assignment/core/assets.dart';
 import 'package:cipherschools_flutter_assignment/prov/auth.dart';
+import 'package:cipherschools_flutter_assignment/ui/home.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,9 +42,42 @@ class SignUpScreen extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                       ),
-                      icon: Image.asset(Assets.googleIcon.path),
-                      label: const Text("Sign Up with Google"),
-                      onPressed: () {},
+                      icon:
+                          provider.isGoogleSignInLoading
+                              ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.purple,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                              : Image.asset(Assets.googleIcon.path),
+                      label:
+                          provider.isGoogleSignInLoading
+                              ? const Text("Signing in...")
+                              : const Text("Sign Up with Google"),
+                      onPressed:
+                          provider.isGoogleSignInLoading
+                              ? null
+                              : () async {
+                                final success =
+                                    await provider.signInWithGoogle();
+                                if (success && context.mounted) {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) => const HomeScreen(),
+                                    ),
+                                  );
+                                } else if (context.mounted &&
+                                    provider.errorMessage != null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(provider.errorMessage!),
+                                    ),
+                                  );
+                                }
+                              },
                     ),
                     const SizedBox(height: 15),
 
@@ -134,9 +168,42 @@ class LoginScreen extends StatelessWidget {
                         ),
                         backgroundColor: Colors.white,
                       ),
-                      icon: Image.asset(Assets.googleIcon.path),
-                      label: const Text("Login with Google"),
-                      onPressed: () {},
+                      icon:
+                          provider.isLoginLoading
+                              ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.purple,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                              : Image.asset(Assets.googleIcon.path),
+                      label:
+                          provider.isLoginLoading
+                              ? const Text("Signing in...")
+                              : const Text("Login with Google"),
+                      onPressed:
+                          provider.isLoginLoading
+                              ? null
+                              : () async {
+                                final success =
+                                    await provider.signInWithGoogle();
+                                if (success && context.mounted) {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) => const HomeScreen(),
+                                    ),
+                                  );
+                                } else if (context.mounted &&
+                                    provider.errorMessage != null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(provider.errorMessage!),
+                                    ),
+                                  );
+                                }
+                              },
                     ),
                     const SizedBox(height: 15),
 
