@@ -9,7 +9,11 @@ enum Assets {
   exportDataIcon('assets/images/export_icon.png'),
   profileImage('assets/images/profile_image.png'),
   logOutIcon('assets/images/logout_icon.png'),
-  editIcon('assets/images/edit.png');
+  editIcon('assets/images/edit.png'),
+  homeIcon('assets/images/home.svg'),
+  transactionIcon('assets/images/transaction.svg'),
+  pieChartIcon('assets/images/pie_chart.svg'),
+  userIcon('assets/images/user.svg');
 
   final String path;
 

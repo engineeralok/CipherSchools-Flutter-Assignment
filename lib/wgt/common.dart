@@ -4,6 +4,7 @@ import 'package:cipherschools_flutter_assignment/prov/navigation.dart';
 import 'package:cipherschools_flutter_assignment/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:svg_icon_widget/svg_icon_widget.dart';
 
 class GoogleSignInButton extends StatelessWidget {
   final AuthProvider provider;
@@ -55,44 +56,18 @@ class GoogleSignInButton extends StatelessWidget {
   }
 }
 
-class NavigationItem {
-  final IconData icon;
-  final int index;
-
-  const NavigationItem({required this.icon, required this.index});
-}
-
-class NavigationBarItem extends StatelessWidget {
-  final NavigationItem item;
-  final int currentIndex;
-  final Function(int) onTap;
-
-  const NavigationBarItem({
-    super.key,
-    required this.item,
-    required this.currentIndex,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        item.icon,
-        color: currentIndex == item.index ? Colors.purple : Colors.grey,
-      ),
-      onPressed: () => onTap(item.index),
-    );
-  }
-}
-
 class HomeBottomNavigationBar extends StatelessWidget {
   const HomeBottomNavigationBar({super.key});
 
-  static const _navigationItems = [
-    NavigationItem(icon: Icons.home, index: 0),
-    NavigationItem(icon: Icons.bar_chart, index: 1),
-    NavigationItem(icon: Icons.person, index: 2),
+  static final _navigationItems = [
+    NavigationItem(image: Assets.homeIcon.path, index: 0, label: "Home"),
+    NavigationItem(
+      image: Assets.transactionIcon.path,
+      index: 1,
+      label: "Transactions",
+    ),
+    NavigationItem(image: Assets.pieChartIcon.path, index: 2, label: "Budget"),
+    NavigationItem(image: Assets.userIcon.path, index: 3, label: "Profile"),
   ];
 
   @override
@@ -101,33 +76,103 @@ class HomeBottomNavigationBar extends StatelessWidget {
       builder: (context, provider, child) {
         return BottomAppBar(
           shape: const CircularNotchedRectangle(),
-          notchMargin: 10,
+          notchMargin: 8,
           child: Container(
-            height: 60,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            height: 75,
+            padding: const EdgeInsets.symmetric(horizontal: 26),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ..._navigationItems
-                    .take(2)
-                    .map(
-                      (item) => NavigationBarItem(
-                        item: item,
-                        currentIndex: provider.currentIndex,
-                        onTap: provider.setCurrentIndex,
-                      ),
-                    ),
-                const SizedBox(width: 40), // Space for FAB
-                NavigationBarItem(
-                  item: _navigationItems.last,
-                  currentIndex: provider.currentIndex,
-                  onTap: provider.setCurrentIndex,
+                ..._navigationItems.map(
+                  (item) => NavigationBarItem(
+                    item: item,
+                    currentIndex: provider.currentIndex,
+                    onTap: provider.setCurrentIndex,
+                    label: item.label,
+                  ),
                 ),
+                // ..._navigationItems
+                //     .take(2)
+                //     .map(
+                //       (item) => NavigationBarItem(
+                //         item: item,
+                //         currentIndex: provider.currentIndex,
+                //         onTap: provider.setCurrentIndex,
+                //         label: item.label,
+                //       ),
+                //     ),
+                // SizedBox(width: 50),
+                // ..._navigationItems
+                //     .skip(2)
+                //     .map(
+                //       (item) => NavigationBarItem(
+                //         item: item,
+                //         currentIndex: provider.currentIndex,
+                //         onTap: provider.setCurrentIndex,
+                //         label: item.label,
+                //       ),
+                //     ),
               ],
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class NavigationItem {
+  final String image;
+  final int index;
+  final String label;
+
+  const NavigationItem({
+    required this.image,
+    required this.index,
+    required this.label,
+  });
+}
+
+class NavigationBarItem extends StatelessWidget {
+  final NavigationItem item;
+  final int currentIndex;
+  final Function(int) onTap;
+  final String label;
+
+  const NavigationBarItem({
+    super.key,
+    required this.item,
+    required this.currentIndex,
+    required this.onTap,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: SvgIcon(
+            SvgIconData(item.image),
+            color:
+                currentIndex == item.index
+                    ? const Color(0xFF7E3DFF)
+                    : const Color(0xFFC5C5C5),
+          ),
+          onPressed: () => onTap(item.index),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            color:
+                currentIndex == item.index
+                    ? const Color(0xFF7E3DFF)
+                    : const Color(0xFFC5C5C5),
+            fontSize: 12,
+          ),
+        ),
+      ],
     );
   }
 }

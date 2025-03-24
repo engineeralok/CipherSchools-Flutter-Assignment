@@ -1,3 +1,4 @@
+import 'package:cipherschools_flutter_assignment/ui/budget.dart';
 import 'package:cipherschools_flutter_assignment/wgt/common.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class HomeScreen extends StatelessWidget {
         final screens = [
           _buildHomeScreen(context),
           const StatisticsScreen(),
+          const BudgetScreen(),
           const ProfileScreen(),
         ];
         return Scaffold(

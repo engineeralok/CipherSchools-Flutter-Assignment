@@ -30,6 +30,9 @@ class MyApp extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
       ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(visualDensity: VisualDensity.compact),
+      ),
       actionIconTheme: ActionIconThemeData(
         backButtonIconBuilder:
             (context) =>
