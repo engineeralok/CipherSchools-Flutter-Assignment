@@ -24,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: Colors.purple,
+                        color: Color(0xFF7E3DFF),
                         width: 2,
                       ), // Border width & color
                     ),
@@ -94,28 +94,24 @@ class ProfileScreen extends StatelessWidget {
                   _buildMenuItem(
                     image: Assets.accountIcon.path,
                     title: 'Account',
-                    color: Colors.purple,
                     onTap: () {},
                   ),
                   Divider(),
                   _buildMenuItem(
                     image: Assets.settingsIcon.path,
                     title: 'Settings',
-                    color: Colors.deepPurpleAccent,
                     onTap: () {},
                   ),
                   Divider(),
                   _buildMenuItem(
                     image: Assets.exportDataIcon.path,
                     title: 'Export Data',
-                    color: Colors.purpleAccent,
                     onTap: () {},
                   ),
                   Divider(),
                   _buildMenuItem(
                     image: Assets.logOutIcon.path,
                     title: 'Logout',
-                    color: Colors.red,
                     onTap: () {
                       showDialog(
                         context: context,
@@ -171,7 +167,7 @@ class ProfileScreen extends StatelessWidget {
     IconData? icon,
     String? image,
     required String title,
-    required Color color,
+    Color? color,
     required VoidCallback onTap,
   }) {
     return ListTile(

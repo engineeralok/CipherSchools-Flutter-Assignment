@@ -1,3 +1,4 @@
+import 'package:cipherschools_flutter_assignment/core/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../prov/transaction.dart';
@@ -7,41 +8,32 @@ class BalanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 200,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.blue[700]!, Colors.blue[500]!],
-        ),
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            'Account Balance',
-            style: TextStyle(color: Colors.white70, fontSize: 16),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Account Balance',
+          style: TextStyle(
+            color: const Color(0xFF90909F),
+            fontSize: 14,
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w500,
           ),
-          const SizedBox(height: 8),
-          Consumer<TransactionProvider>(
-            builder:
-                (context, provider, child) => Text(
-                  '₹${provider.balance.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+        ),
+        const SizedBox(height: 8),
+        Consumer<TransactionProvider>(
+          builder:
+              (context, provider, child) => Text(
+                '₹${provider.balance.toStringAsFixed(2)}',
+                style: const TextStyle(
+                  color: Color(0xFF161719),
+                  fontSize: 40,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w600,
                 ),
-          ),
-        ],
-      ),
+              ),
+        ),
+      ],
     );
   }
 }
@@ -52,9 +44,10 @@ class IncomeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 80,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.green[50],
+        color: Color(0xFF00A86B),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -64,36 +57,36 @@ class IncomeCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Row(
+          Image.asset(Assets.incomeIcon.path),
+          SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.green[100],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(Icons.arrow_downward, color: Colors.green),
-              ),
-              const SizedBox(width: 8),
               const Text(
                 'Income',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(height: 4),
+              Consumer<TransactionProvider>(
+                builder:
+                    (context, provider, child) => Text(
+                      '₹${provider.totalIncome.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
               ),
             ],
-          ),
-          const SizedBox(height: 12),
-          Consumer<TransactionProvider>(
-            builder:
-                (context, provider, child) => Text(
-                  '₹${provider.totalIncome.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
           ),
         ],
       ),
@@ -107,9 +100,10 @@ class ExpenseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 80,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.red[50],
+        color: Color(0xFFFD3C4A),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -119,36 +113,36 @@ class ExpenseCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Row(
+          Image.asset(Assets.expenseIcon.path),
+          SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.red[100],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(Icons.arrow_upward, color: Colors.red),
-              ),
-              const SizedBox(width: 8),
               const Text(
                 'Expenses',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(height: 4),
+              Consumer<TransactionProvider>(
+                builder:
+                    (context, provider, child) => Text(
+                      '₹${provider.totalExpense.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
               ),
             ],
-          ),
-          const SizedBox(height: 12),
-          Consumer<TransactionProvider>(
-            builder:
-                (context, provider, child) => Text(
-                  '₹${provider.totalExpense.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
           ),
         ],
       ),

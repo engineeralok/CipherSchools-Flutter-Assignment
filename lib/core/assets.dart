@@ -10,12 +10,27 @@ enum Assets {
   profileImage('assets/images/profile_image.png'),
   logOutIcon('assets/images/logout_icon.png'),
   editIcon('assets/images/edit.png'),
-  homeIcon('assets/images/home.svg'),
-  transactionIcon('assets/images/transaction.svg'),
-  pieChartIcon('assets/images/pie_chart.svg'),
-  userIcon('assets/images/user.svg');
+  incomeIcon('assets/images/income_icon.png'),
+  expenseIcon('assets/images/expenses_icon.png'),
+  shoppingIcon('assets/images/shopping_icon.png'),
+  subscriptionIcon('assets/images/subscription_icon.png'),
+  travelIcon('assets/images/travel_icon.png'),
+  foodIcon('assets/images/food_icon.png');
 
   final String path;
 
   const Assets(this.path);
+}
+
+enum SvgAssets {
+  homeIcon('assets/images/home.svg'),
+  transactionIcon('assets/images/transaction.svg'),
+  pieChartIcon('assets/images/pie_chart.svg'),
+  userIcon('assets/images/user.svg'),
+  downArrowIcon('assets/images/down_arrow.svg'),
+  notificationIcon('assets/images/notification.svg');
+
+  final String path;
+
+  const SvgAssets(this.path);
 }

@@ -20,7 +20,7 @@ class GoogleSignInButton extends StatelessWidget {
                 height: 20,
                 width: 20,
                 child: CircularProgressIndicator(
-                  color: Colors.purple,
+                  color: Color(0xFF7E3DFF),
                   strokeWidth: 2,
                 ),
               )
@@ -60,14 +60,18 @@ class HomeBottomNavigationBar extends StatelessWidget {
   const HomeBottomNavigationBar({super.key});
 
   static final _navigationItems = [
-    NavigationItem(image: Assets.homeIcon.path, index: 0, label: "Home"),
+    NavigationItem(image: SvgAssets.homeIcon.path, index: 0, label: "Home"),
     NavigationItem(
-      image: Assets.transactionIcon.path,
+      image: SvgAssets.transactionIcon.path,
       index: 1,
       label: "Transactions",
     ),
-    NavigationItem(image: Assets.pieChartIcon.path, index: 2, label: "Budget"),
-    NavigationItem(image: Assets.userIcon.path, index: 3, label: "Profile"),
+    NavigationItem(
+      image: SvgAssets.pieChartIcon.path,
+      index: 2,
+      label: "Budget",
+    ),
+    NavigationItem(image: SvgAssets.userIcon.path, index: 3, label: "Profile"),
   ];
 
   @override

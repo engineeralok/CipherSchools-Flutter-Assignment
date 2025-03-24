@@ -3,6 +3,7 @@ import 'package:cipherschools_flutter_assignment/prov/auth.dart';
 import 'package:cipherschools_flutter_assignment/prov/navigation.dart';
 import 'package:cipherschools_flutter_assignment/prov/onboarding.dart';
 import 'package:cipherschools_flutter_assignment/prov/transaction.dart';
+import 'package:cipherschools_flutter_assignment/prov/home_screen.dart';
 import 'package:cipherschools_flutter_assignment/ui/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
 
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
-            side: BorderSide(color: Colors.purple.withAlpha(60), width: 1),
+            side: BorderSide(color: Color(0xFF7E3DFF).withAlpha(60), width: 1),
           ),
           shadowColor: Colors.deepPurpleAccent,
           elevation: 0,
@@ -64,7 +65,7 @@ class MyApp extends StatelessWidget {
       checkboxTheme: CheckboxThemeData(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         side: BorderSide(
-          color: Colors.purple,
+          color: Color(0xFF7E3DFF),
           width: 2,
           style: BorderStyle.solid,
         ),
@@ -80,7 +81,7 @@ class MyApp extends StatelessWidget {
         ),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.purple,
+            color: Color(0xFF7E3DFF),
             width: 1,
             style: BorderStyle.solid,
           ),
@@ -88,7 +89,7 @@ class MyApp extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.purple,
+            color: Color(0xFF7E3DFF),
             width: 2,
             style: BorderStyle.solid,
           ),
@@ -96,7 +97,7 @@ class MyApp extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.purple.withAlpha(60),
+            color: Color(0xFF7E3DFF).withAlpha(60),
             width: 1,
             style: BorderStyle.solid,
           ),
@@ -104,7 +105,7 @@ class MyApp extends StatelessWidget {
         ),
         disabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.purple.withAlpha(60),
+            color: Color(0xFF7E3DFF).withAlpha(60),
             width: 1,
             style: BorderStyle.solid,
           ),
@@ -134,6 +135,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => TransactionProvider()),
         ChangeNotifierProvider(create: (context) => NavigationProvider()),
+        ChangeNotifierProvider(create: (context) => HomeScreenProvider()),
       ],
       child: MaterialApp(
         theme: appTheme,

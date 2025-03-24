@@ -96,7 +96,7 @@ class BudgetScreen extends StatelessWidget {
                     value: 0.65,
                     backgroundColor: Colors.grey[200],
                     valueColor: const AlwaysStoppedAnimation<Color>(
-                      Colors.purple,
+                      Color(0xFF7E3DFF),
                     ),
                   ),
                 ],
@@ -142,7 +142,7 @@ class BudgetScreen extends StatelessWidget {
                     'Entertainment',
                     400,
                     250,
-                    Colors.purple,
+                    Color(0xFF7E3DFF),
                   ),
                 ],
               ),

@@ -121,7 +121,7 @@ class SignUpForm extends StatelessWidget {
 
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
+                backgroundColor: Color(0xFF7E3DFF),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -239,7 +239,7 @@ class LoginForm extends StatelessWidget {
 
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
+                backgroundColor: Color(0xFF7E3DFF),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),

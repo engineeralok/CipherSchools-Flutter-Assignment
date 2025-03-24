@@ -35,7 +35,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
     'Food': Colors.red,
     'Shopping': Colors.orange,
     'Travel': Colors.blue,
-    'Subscription': Colors.purple,
+    'Subscription': Color(0xFF7E3DFF),
     'Entertainment': Colors.pink,
     'Bills': Colors.green,
     'Salary': Colors.indigo,
@@ -98,7 +98,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
           end: Alignment.bottomRight,
           colors:
               _isIncome
-                  ? [Colors.purple, Colors.deepPurple]
+                  ? [Color(0xFF7E3DFF), Colors.deepPurple]
                   : [Colors.blue[700]!, Colors.blue[500]!],
         ),
         borderRadius: const BorderRadius.only(
@@ -159,7 +159,8 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
               ElevatedButton(
                 onPressed: _submitForm,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _isIncome ? Colors.purple : Colors.blue[700],
+                  backgroundColor:
+                      _isIncome ? Color(0xFF7E3DFF) : Colors.blue[700],
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(

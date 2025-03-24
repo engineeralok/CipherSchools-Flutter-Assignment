@@ -103,7 +103,7 @@ class StatisticsScreen extends StatelessWidget {
       case 'Travel':
         return Colors.blue;
       case 'Subscription':
-        return Colors.purple;
+        return Color(0xFF7E3DFF);
       case 'Entertainment':
         return Colors.pink;
       case 'Bills':

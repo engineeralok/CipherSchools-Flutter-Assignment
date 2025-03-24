@@ -1,8 +1,11 @@
+import 'package:cipherschools_flutter_assignment/core/assets.dart';
 import 'package:cipherschools_flutter_assignment/ui/budget.dart';
 import 'package:cipherschools_flutter_assignment/wgt/common.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:svg_icon_widget/svg_icon_widget.dart';
 import '../prov/navigation.dart';
+import '../prov/home_screen.dart';
 import '../ui/profile.dart';
 import '../ui/statistics.dart';
 import '../wgt/home.dart';
@@ -42,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                     ),
               );
             },
-            backgroundColor: Colors.purple,
+            backgroundColor: Color(0xFF7E3DFF),
             child: const Icon(Icons.add, color: Colors.white),
           ),
           floatingActionButtonLocation:
@@ -66,34 +69,63 @@ class HomeScreen extends StatelessWidget {
                     Provider.of<NavigationProvider>(
                       context,
                       listen: false,
-                    ).setCurrentIndex(2);
+                    ).setCurrentIndex(3);
                   },
                   child: const CircleAvatar(
                     radius: 20,
-                    backgroundColor: Colors.purple,
+                    backgroundColor: Color(0xFF7E3DFF),
                     child: Icon(Icons.person, color: Colors.white),
                   ),
                 ),
-                DropdownButton<String>(
-                  value: 'October',
-                  items:
-                      ['October'].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                  onChanged: (String? newValue) {},
+
+                InkWell(
+                  onTap: () async {
+                    final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2100),
+                      initialDatePickerMode: DatePickerMode.day,
+                    );
+                    if (picked != null && context.mounted) {
+                      Provider.of<HomeScreenProvider>(
+                        context,
+                        listen: false,
+                      ).setSelectedMonth(picked);
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      SvgIcon(SvgIconData(SvgAssets.downArrowIcon.path)),
+                      const SizedBox(width: 8),
+                      Consumer<HomeScreenProvider>(
+                        builder: (context, provider, child) {
+                          final now = provider.selectedMonth ?? DateTime.now();
+                          return Text(
+                            '${now.day} ${provider.getMonthName(now.month)} ${now.year}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
+
                 IconButton(
-                  icon: const Icon(Icons.notifications_none),
+                  icon: SvgIcon(
+                    SvgIconData(SvgAssets.notificationIcon.path),
+                    color: const Color(0xFF7E3DFF),
+                  ),
                   onPressed: () {},
                 ),
               ],
             ),
           ),
           const BalanceCard(),
-          const SizedBox(height: 20),
+          const SizedBox(height: 27),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
@@ -112,9 +144,36 @@ class HomeScreen extends StatelessWidget {
               children: [
                 const Text(
                   'Recent Transaction',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: Color(0xFF292B2D),
+                    fontSize: 18,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                TextButton(onPressed: () {}, child: const Text('See All')),
+                SizedBox(
+                  width: 78,
+                  height: 32,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(0),
+                      backgroundColor: Color(0xFFEEE5FF),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: const Text(
+                      'See All',
+                      style: TextStyle(
+                        color: Color(0xFF7E3DFF),
+                        fontSize: 14,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
