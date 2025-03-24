@@ -1,6 +1,5 @@
-import 'package:cipherschools_flutter_assignment/core/assets.dart';
 import 'package:cipherschools_flutter_assignment/prov/auth.dart';
-import 'package:cipherschools_flutter_assignment/ui/home.dart';
+import 'package:cipherschools_flutter_assignment/wgt/common.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +15,7 @@ class SignUpScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: Consumer<SignUpProvider>(
+          child: Consumer<AuthProvider>(
             builder: (context, provider, child) {
               return SingleChildScrollView(
                 child: Column(
@@ -38,47 +37,7 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
 
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                      ),
-                      icon:
-                          provider.isGoogleSignInLoading
-                              ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.purple,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                              : Image.asset(Assets.googleIcon.path),
-                      label:
-                          provider.isGoogleSignInLoading
-                              ? const Text("Signing in...")
-                              : const Text("Sign Up with Google"),
-                      onPressed:
-                          provider.isGoogleSignInLoading
-                              ? null
-                              : () async {
-                                final success =
-                                    await provider.signInWithGoogle();
-                                if (success && context.mounted) {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) => const HomeScreen(),
-                                    ),
-                                  );
-                                } else if (context.mounted &&
-                                    provider.errorMessage != null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(provider.errorMessage!),
-                                    ),
-                                  );
-                                }
-                              },
-                    ),
+                    GoogleSignInButton(provider: provider),
                     const SizedBox(height: 15),
 
                     Center(
@@ -105,7 +64,7 @@ class SignUpScreen extends StatelessWidget {
                               recognizer:
                                   TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.of(context).pushReplacement(
+                                      Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder:
                                               (context) => const LoginScreen(),
@@ -138,7 +97,7 @@ class LoginScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: Consumer<SignUpProvider>(
+          child: Consumer<AuthProvider>(
             builder: (context, provider, child) {
               return SingleChildScrollView(
                 child: Column(
@@ -160,51 +119,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
 
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        backgroundColor: Colors.white,
-                      ),
-                      icon:
-                          provider.isLoginLoading
-                              ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.purple,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                              : Image.asset(Assets.googleIcon.path),
-                      label:
-                          provider.isLoginLoading
-                              ? const Text("Signing in...")
-                              : const Text("Login with Google"),
-                      onPressed:
-                          provider.isLoginLoading
-                              ? null
-                              : () async {
-                                final success =
-                                    await provider.signInWithGoogle();
-                                if (success && context.mounted) {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) => const HomeScreen(),
-                                    ),
-                                  );
-                                } else if (context.mounted &&
-                                    provider.errorMessage != null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(provider.errorMessage!),
-                                    ),
-                                  );
-                                }
-                              },
-                    ),
+                    GoogleSignInButton(provider: provider),
                     const SizedBox(height: 15),
 
                     Center(
@@ -231,7 +146,7 @@ class LoginScreen extends StatelessWidget {
                               recognizer:
                                   TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.of(context).pushReplacement(
+                                      Navigator.of(context).pop(
                                         MaterialPageRoute(
                                           builder:
                                               (context) => const SignUpScreen(),

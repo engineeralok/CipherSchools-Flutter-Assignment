@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class SignUpProvider extends ChangeNotifier {
+class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   User? user;
@@ -123,7 +123,7 @@ class SignUpProvider extends ChangeNotifier {
   bool isPasswordVisible = false;
   bool isChecked = false;
 
-  SignUpProvider() {
+  AuthProvider() {
     nameController.addListener(_updateButtonState);
     emailController.addListener(_updateButtonState);
     passwordController.addListener(_updateButtonState);

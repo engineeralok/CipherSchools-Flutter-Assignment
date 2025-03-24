@@ -1,17 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../prov/navigation.dart';
+import '../ui/profile.dart';
+import '../ui/statistics.dart';
 import '../wgt/home.dart';
 import '../wgt/add_transaction.dart';
-import '../prov/transaction.dart';
+import '../wgt/bottom_navigation.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F6),
-      body: SafeArea(
+    return Consumer<NavigationProvider>(
+      builder: (context, navigationProvider, child) {
+        final screens = [
+          _buildHomeScreen( context),
+          const StatisticsScreen(),
+          const ProfileScreen(),
+        ];
+
+        return Scaffold(
+          backgroundColor: const Color(0xFFF6F6F6),
+          body: SafeArea(
+            child: screens[navigationProvider.currentIndex],
+          ),
+          bottomNavigationBar: const HomeBottomNavigationBar(),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) => SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                    child: const AddTransactionForm(),
+                  ),
+                ),
+              );
+            },
+            backgroundColor: Colors.purple,
+            child: const Icon(Icons.add, color: Colors.white),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        );
+      },
+    );
+  }
+
+  Widget _buildHomeScreen( BuildContext context) {
+    return SafeArea(
         child: Column(
           children: [
             Padding(
@@ -19,10 +59,18 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.purple,
-                    child: Icon(Icons.person, color: Colors.white),
+                  InkWell(
+                    onTap: () {
+                      Provider.of<NavigationProvider>(
+                        context,
+                        listen: false,
+                      ).setCurrentIndex(2);
+                    },
+                    child: const CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.purple,
+                      child: Icon(Icons.person, color: Colors.white),
+                    ),
                   ),
                   DropdownButton<String>(
                     value: 'October',
@@ -71,28 +119,8 @@ class HomeScreen extends StatelessWidget {
             const Expanded(child: TransactionList()),
           ],
         ),
-      ),
-      bottomNavigationBar: const HomeBottomNavigationBar(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder:
-                (context) => SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom,
-                    ),
-                    // child: const AddTransactionForm(),
-                  ),
-                ),
-          );
-        },
-        backgroundColor: Colors.purple,
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      
+
     );
   }
 }

@@ -11,6 +11,7 @@ class StatisticsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F6F6),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Statistics'),
         backgroundColor: Colors.transparent,
         elevation: 0,

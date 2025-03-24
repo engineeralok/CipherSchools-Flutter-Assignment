@@ -289,34 +289,34 @@ class TransactionItem extends StatelessWidget {
   }
 }
 
-class HomeBottomNavigationBar extends StatelessWidget {
-  const HomeBottomNavigationBar({super.key});
+// class HomeBottomNavigationBar extends StatelessWidget {
+//   const HomeBottomNavigationBar({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      notchMargin: 8,
-      child: Container(
-        height: 60,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(icon: const Icon(Icons.home_outlined), onPressed: () {}),
-            IconButton(
-              icon: const Icon(Icons.pie_chart_outline),
-              onPressed: () {},
-            ),
-            const SizedBox(width: 40),
-            IconButton(icon: const Icon(Icons.history), onPressed: () {}),
-            IconButton(
-              icon: const Icon(Icons.person_outline),
-              onPressed: () {},
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BottomAppBar(
+//       shape: const CircularNotchedRectangle(),
+//       notchMargin: 8,
+//       child: Container(
+//         height: 60,
+//         padding: const EdgeInsets.symmetric(horizontal: 16),
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [
+//             IconButton(icon: const Icon(Icons.home_outlined), onPressed: () {}),
+//             IconButton(
+//               icon: const Icon(Icons.pie_chart_outline),
+//               onPressed: () {},
+//             ),
+//             const SizedBox(width: 40),
+//             IconButton(icon: const Icon(Icons.history), onPressed: () {}),
+//             IconButton(
+//               icon: const Icon(Icons.person_outline),
+//               onPressed: () {},
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

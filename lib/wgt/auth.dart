@@ -8,7 +8,7 @@ class SignUpForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SignUpProvider>(
+    return Consumer<AuthProvider>(
       builder: (context, provider, child) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,7 +144,7 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SignUpProvider>(
+    return Consumer<AuthProvider>(
       builder: (context, provider, child) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,33 +185,36 @@ class LoginForm extends StatelessWidget {
                           provider.passwordController.text.trim().isNotEmpty &&
                           !provider.isLoginLoading
                       ? () async {
-                          final success = await provider.signInWithEmailAndPassword();
-                          if (success && context.mounted) {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const HomeScreen(),
-                              ),
-                            );
-                          } else if (context.mounted && provider.errorMessage != null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(provider.errorMessage!)),
-                            );
-                          }
+                        final success =
+                            await provider.signInWithEmailAndPassword();
+                        if (success && context.mounted) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ),
+                          );
+                        } else if (context.mounted &&
+                            provider.errorMessage != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(provider.errorMessage!)),
+                          );
                         }
+                      }
                       : null,
-              child: provider.isLoginLoading
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
+              child:
+                  provider.isLoginLoading
+                      ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                      : const Text(
+                        "Login",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
-                    )
-                  : const Text(
-                      "Login",
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
             ),
             const SizedBox(height: 17),
           ],
