@@ -1,6 +1,9 @@
 import 'package:cipherschools_flutter_assignment/core/assets.dart';
+import 'package:cipherschools_flutter_assignment/prov/navigation.dart';
 import 'package:cipherschools_flutter_assignment/ui/auth.dart';
+import 'package:cipherschools_flutter_assignment/ui/home.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../core/const.dart';
 
@@ -17,8 +20,18 @@ class SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
+        final navigationProvider = Provider.of<NavigationProvider>(
+          context,
+          listen: false,
+        );
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => WalkthroughScreen()),
+          MaterialPageRoute(
+            builder:
+                (context) =>
+                    navigationProvider.isUserLoggedIn
+                        ? const HomeScreen()
+                        : const WalkthroughScreen(),
+          ),
         );
       }
     });
