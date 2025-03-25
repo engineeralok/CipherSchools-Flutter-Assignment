@@ -12,7 +12,20 @@
           "package_name": "com.cipherschools.assignment"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "138278663781-9sq0ag3urqi9puhdu69ooq2me4jk3vhg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cipherschools.assignment",
+            "certificate_hash": "f6660589ee143ebb0db0795aeba17fb3e5d2f557"
+          }
+        },
+        {
+          "client_id": "138278663781-iccad3vm14k212pke0skustk3870au1b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBzTamj54i2RlzmswIjGcXfbO1qySAZ9FM"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138278663781-iccad3vm14k212pke0skustk3870au1b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "138278663781-c5emb9j0kjnhauh2ruokn85a4livghgh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cipherschoolsFlutterAssignment"
+              }
+            }
+          ]
         }
       }
     }

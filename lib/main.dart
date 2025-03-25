@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appTheme = ThemeData(
+    ThemeData appTheme = ThemeData(
       appBarTheme: AppBarTheme(
         elevation: 0,
         centerTitle: true,

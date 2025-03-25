@@ -16,80 +16,91 @@ class StatisticsScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Consumer<TransactionProvider>(
-        builder: (context, provider, child) {
-          final categoryTotals = provider.getCategoryTotals();
-          final totalAmount = categoryTotals.values.fold(0.0, (a, b) => a + b);
+      body: SafeArea(
+        child: Consumer<TransactionProvider>(
+          builder: (context, provider, child) {
+            final categoryTotals = provider.getCategoryTotals();
+            final totalAmount = categoryTotals.values.fold(
+              0.0,
+              (a, b) => a + b,
+            );
 
-          if (categoryTotals.isEmpty) {
-            return const Center(child: Text('No transactions yet'));
-          }
+            if (categoryTotals.isEmpty) {
+              return const Center(child: Text('No transactions yet'));
+            }
 
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  height: 300,
-                  padding: const EdgeInsets.all(16),
-                  child: PieChart(
-                    PieChartData(
-                      sections:
-                          categoryTotals.entries.map((entry) {
-                            final category = entry.key;
-                            final amount = entry.value;
-                            final percentage = (amount / totalAmount) * 100;
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 50),
+                  Container(
+                    height: 200,
+                    width: 200,
+                    padding: const EdgeInsets.all(16),
+                    child: PieChart(
+                      PieChartData(
+                        sections:
+                            categoryTotals.entries.map((entry) {
+                              final category = entry.key;
+                              final amount = entry.value;
+                              final percentage = (amount / totalAmount) * 100;
 
-                            return PieChartSectionData(
-                              color: _getCategoryColor(category),
-                              value: amount,
-                              title: '${percentage.toStringAsFixed(1)}%',
-                              radius: 150,
-                              titleStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            );
-                          }).toList(),
-                      sectionsSpace: 2,
-                      centerSpaceRadius: 40,
+                              return PieChartSectionData(
+                                color: _getCategoryColor(category),
+                                value: amount,
+                                title: '${percentage.toStringAsFixed(1)}%',
+                                radius: 80,
+                                titleStyle: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              );
+                            }).toList(),
+                        sectionsSpace: 2,
+                        centerSpaceRadius: 40,
+                      ),
                     ),
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Expense by Category',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: categoryTotals.length,
-                  itemBuilder: (context, index) {
-                    final category = categoryTotals.keys.elementAt(index);
-                    final amount = categoryTotals[category]!;
-                    final percentage = (amount / totalAmount) * 100;
-
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: _getCategoryColor(category),
-                        child: Icon(
-                          _getCategoryIcon(category),
-                          color: Colors.white,
-                        ),
+                  SizedBox(height: 50),
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Expense by Category',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                      title: Text(category),
-                      subtitle: Text('₹${amount.toStringAsFixed(2)}'),
-                      trailing: Text('${percentage.toStringAsFixed(1)}%'),
-                    );
-                  },
-                ),
-              ],
-            ),
-          );
-        },
+                    ),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: categoryTotals.length,
+                    itemBuilder: (context, index) {
+                      final category = categoryTotals.keys.elementAt(index);
+                      final amount = categoryTotals[category]!;
+                      final percentage = (amount / totalAmount) * 100;
+
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: _getCategoryColor(category),
+                          child: Icon(
+                            _getCategoryIcon(category),
+                            color: Colors.white,
+                          ),
+                        ),
+                        title: Text(category),
+                        subtitle: Text('₹${amount.toStringAsFixed(2)}'),
+                        trailing: Text('${percentage.toStringAsFixed(1)}%'),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

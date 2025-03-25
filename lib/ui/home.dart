@@ -59,84 +59,106 @@ class HomeScreen extends StatelessWidget {
     return SafeArea(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment(0.53, 0.07),
+                end: Alignment(0.48, 1.30),
+                colors: [Color.fromARGB(255, 252, 241, 220), Color(0x00F7ECD7)],
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                InkWell(
-                  onTap: () {
-                    Provider.of<NavigationProvider>(
-                      context,
-                      listen: false,
-                    ).setCurrentIndex(3);
-                  },
-                  child: const CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Color(0xFF7E3DFF),
-                    child: Icon(Icons.person, color: Colors.white),
-                  ),
-                ),
-
-                InkWell(
-                  onTap: () async {
-                    final DateTime? picked = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
-                      initialDatePickerMode: DatePickerMode.day,
-                    );
-                    if (picked != null && context.mounted) {
-                      Provider.of<HomeScreenProvider>(
-                        context,
-                        listen: false,
-                      ).setSelectedMonth(picked);
-                    }
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SvgIcon(SvgIconData(SvgAssets.downArrowIcon.path)),
-                      const SizedBox(width: 8),
-                      Consumer<HomeScreenProvider>(
-                        builder: (context, provider, child) {
-                          final now = provider.selectedMonth ?? DateTime.now();
-                          return Text(
-                            '${now.day} ${provider.getMonthName(now.month)} ${now.year}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          );
+                      InkWell(
+                        onTap: () {
+                          Provider.of<NavigationProvider>(
+                            context,
+                            listen: false,
+                          ).setCurrentIndex(3);
                         },
+                        child: const CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Color(0xFF7E3DFF),
+                          child: Icon(Icons.person, color: Colors.white),
+                        ),
+                      ),
+
+                      InkWell(
+                        onTap: () async {
+                          final DateTime? picked = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2100),
+                            initialDatePickerMode: DatePickerMode.day,
+                          );
+                          if (picked != null && context.mounted) {
+                            Provider.of<HomeScreenProvider>(
+                              context,
+                              listen: false,
+                            ).setSelectedMonth(picked);
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            SvgIcon(SvgIconData(SvgAssets.downArrowIcon.path)),
+                            const SizedBox(width: 8),
+                            Consumer<HomeScreenProvider>(
+                              builder: (context, provider, child) {
+                                final now =
+                                    provider.selectedMonth ?? DateTime.now();
+                                return Text(
+                                  '${now.day} ${provider.getMonthName(now.month)} ${now.year}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      IconButton(
+                        icon: SvgIcon(
+                          SvgIconData(SvgAssets.notificationIcon.path),
+                          color: const Color(0xFF7E3DFF),
+                        ),
+                        onPressed: () {},
                       ),
                     ],
                   ),
                 ),
-
-                IconButton(
-                  icon: SvgIcon(
-                    SvgIconData(SvgAssets.notificationIcon.path),
-                    color: const Color(0xFF7E3DFF),
+                const BalanceCard(),
+                const SizedBox(height: 27),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    children: [
+                      Expanded(child: IncomeCard()),
+                      SizedBox(width: 16),
+                      Expanded(child: ExpenseCard()),
+                    ],
                   ),
-                  onPressed: () {},
                 ),
+                const SizedBox(height: 23),
               ],
             ),
           ),
-          const BalanceCard(),
-          const SizedBox(height: 27),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              children: [
-                Expanded(child: IncomeCard()),
-                SizedBox(width: 16),
-                Expanded(child: ExpenseCard()),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20.0),
+          const SizedBox(height: 10.0),
+          const TransactionFilterTabs(),
+          const SizedBox(height: 10.0),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(

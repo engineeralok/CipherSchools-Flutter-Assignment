@@ -19,7 +19,7 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), 'expense_tracker.db');
     return await openDatabase(
       path,
-      version: 2,
+      version: 4,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -34,7 +34,8 @@ class DatabaseHelper {
         amount REAL NOT NULL,
         type TEXT NOT NULL,
         category TEXT NOT NULL,
-        icon INTEGER NOT NULL,
+        imagePath TEXT,
+        iconData INTEGER,
         iconBackgroundColor INTEGER NOT NULL,
         timestamp INTEGER NOT NULL
       )
@@ -44,6 +45,63 @@ class DatabaseHelper {
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
       await db.execute('ALTER TABLE transactions ADD COLUMN note TEXT');
+    }
+    if (oldVersion < 3) {
+      var tableInfo = await db.rawQuery("PRAGMA table_info(transactions)");
+      bool noteColumnExists = tableInfo.any(
+        (column) => column['name'] == 'note',
+      );
+      bool imagePathColumnExists = tableInfo.any(
+        (column) => column['name'] == 'imagePath',
+      );
+      bool iconDataColumnExists = tableInfo.any(
+        (column) => column['name'] == 'iconData',
+      );
+
+      await db.execute('''
+        CREATE TABLE transactions_temp (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          title TEXT NOT NULL,
+          subtitle TEXT,
+          amount REAL NOT NULL,
+          type TEXT NOT NULL,
+          category TEXT NOT NULL,
+          imagePath TEXT,
+          iconData INTEGER,
+          iconBackgroundColor INTEGER NOT NULL,
+          timestamp INTEGER NOT NULL,
+          note TEXT
+        )
+      ''');
+
+      String insertColumns =
+          'id, title, subtitle, amount, type, category, iconBackgroundColor, timestamp';
+      String selectColumns =
+          'id, title, subtitle, amount, type, category, iconBackgroundColor, timestamp';
+
+      if (noteColumnExists) {
+        insertColumns += ', note';
+        selectColumns += ', note';
+      }
+
+      if (imagePathColumnExists) {
+        insertColumns += ', imagePath';
+        selectColumns += ', imagePath';
+      }
+
+      if (iconDataColumnExists) {
+        insertColumns += ', iconData';
+        selectColumns += ', iconData';
+      }
+
+      await db.execute('''
+        INSERT INTO transactions_temp ($insertColumns)
+        SELECT $selectColumns FROM transactions
+      ''');
+
+      await db.execute('DROP TABLE transactions');
+
+      await db.execute('ALTER TABLE transactions_temp RENAME TO transactions');
     }
   }
 
@@ -79,13 +137,9 @@ class DatabaseHelper {
         : 0.0;
   }
 
-  Future<int> deleteTransaction(int id) async {
+  Future<int> deleteTransaction(String id) async {
     Database db = await database;
-    return await db.delete(
-      'transactions',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    return await db.delete('transactions', where: 'id = ?', whereArgs: [id]);
   }
 
   Future<int> deleteAllTransactions() async {

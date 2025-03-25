@@ -11,6 +11,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var navigationProvider = context.read<NavigationProvider>();
+    final authProvider = context.watch<AuthProvider>();
     return Scaffold(
       backgroundColor: Color(0xffF6F6F6),
       body: SafeArea(
@@ -43,10 +44,10 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Username',
                         style: TextStyle(
                           color: Color(0xFF90909F),
@@ -56,8 +57,8 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Khushi Sharma',
-                        style: TextStyle(
+                        authProvider.userModel?.name ?? 'Guest User',
+                        style: const TextStyle(
                           color: Color(0xFF161719),
                           fontSize: 24,
                           fontFamily: 'Inter',

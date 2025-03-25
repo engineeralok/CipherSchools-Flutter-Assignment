@@ -1,3 +1,5 @@
+import 'package:cipherschools_flutter_assignment/core/assets.dart';
+import 'package:cipherschools_flutter_assignment/models/category_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/transaction.dart';
@@ -19,19 +21,28 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
   String _category = 'Food';
   bool get _isIncome => _type == 'income';
 
-  final Map<String, IconData> _categoryIcons = {
-    'Food': Icons.fastfood,
-    'Shopping': Icons.shopping_bag,
-    'Travel': Icons.directions_car,
-    'Subscription': Icons.subscriptions,
-    'Entertainment': Icons.movie,
-    'Bills': Icons.receipt,
-    'Salary': Icons.work,
-    'Investment': Icons.trending_up,
-    'Other': Icons.more_horiz,
+  final Map<String, CategoryIcon> _categoryIcons = {
+    'Food': CategoryIcon(imagePath: Assets.foodIcon.path, icon: Icons.fastfood),
+    'Shopping': CategoryIcon(
+      imagePath: Assets.shoppingIcon.path,
+      icon: Icons.shopping_bag,
+    ),
+    'Travel': CategoryIcon(
+      imagePath: Assets.travelIcon.path,
+      icon: Icons.directions_car,
+    ),
+    'Subscription': CategoryIcon(
+      imagePath: Assets.subscriptionIcon.path,
+      icon: Icons.subscriptions,
+    ),
+    'Entertainment': CategoryIcon(icon: Icons.movie),
+    'Bills': CategoryIcon(icon: Icons.receipt),
+    'Salary': CategoryIcon(icon: Icons.work),
+    'Investment': CategoryIcon(icon: Icons.trending_up),
+    'Other': CategoryIcon(icon: Icons.more_horiz),
   };
 
-  final Map<String, Color> _categoryColors = {
+  final Map<String, Color> categoryColors = {
     'Food': Colors.red,
     'Shopping': Colors.orange,
     'Travel': Colors.blue,
@@ -52,7 +63,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
         type: _type,
         category: _category,
         icon: _categoryIcons[_category]!,
-        iconBackgroundColor: _categoryColors[_category]!,
+        iconBackgroundColor: categoryColors[_category]!,
         timestamp: DateTime.now(),
       );
 
@@ -99,7 +110,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
           colors:
               _isIncome
                   ? [Color(0xFF7E3DFF), Colors.deepPurple]
-                  : [Colors.blue[700]!, Colors.blue[500]!],
+                  : [Color(0xFF0077FF), Colors.blue[500]!],
         ),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(30),
@@ -110,9 +121,36 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SegmentedButton<String>(
+            style: const ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
             segments: const [
-              ButtonSegment(value: 'expense', label: Text('Expense')),
-              ButtonSegment(value: 'income', label: Text('Income')),
+              ButtonSegment(
+                value: 'expense',
+                label: Text(
+                  'Expense',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              ButtonSegment(
+                value: 'income',
+                label: Text(
+                  'Income',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             ],
             selected: {_type},
             onSelectionChanged: (Set<String> newSelection) {
@@ -138,36 +176,36 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
   Widget _buildForm() {
     return Expanded(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              _buildCategoryDropdown(),
+              const SizedBox(height: 16),
+
+              _buildTextField(_titleController, 'Title'),
+              const SizedBox(height: 16),
+              _buildTextField(_subtitleController, 'Description'),
+              const SizedBox(height: 16),
               _buildTextField(
                 _amountController,
                 '₹ Amount',
                 TextInputType.number,
               ),
-              const SizedBox(height: 16),
-              _buildTextField(_titleController, 'Title'),
-              const SizedBox(height: 16),
-              _buildTextField(_subtitleController, 'Description'),
-              const SizedBox(height: 16),
-              _buildCategoryDropdown(),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _submitForm,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      _isIncome ? Color(0xFF7E3DFF) : Colors.blue[700],
+                  backgroundColor: Color(0xFF7E3DFF),
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
-                child: const Text('Add Transaction'),
+                child: const Text('Continue'),
               ),
             ],
           ),
@@ -226,7 +264,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
               value: value,
               child: Row(
                 children: [
-                  Icon(_categoryIcons[value], color: _categoryColors[value]),
+                  _categoryIcons[value]!.build(color: categoryColors[value]),
                   const SizedBox(width: 8),
                   Text(value),
                 ],
