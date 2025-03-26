@@ -16,6 +16,11 @@ class TransactionProvider extends ChangeNotifier {
   String _selectedFilter = 'Today'; // Default filter
   bool _useFirestore = true; // Flag to determine if Firestore should be used
 
+  void removeItemFromList(Transaction transaction) {
+    _transactions.remove(transaction);
+    notifyListeners();
+  }
+
   List<Transaction> get transactions {
     final now = DateTime.now();
     switch (_selectedFilter) {
@@ -207,6 +212,7 @@ class TransactionProvider extends ChangeNotifier {
               .delete();
         } else {
           await _db.deleteTransaction(transaction.id!);
+          notifyListeners();
         }
       } catch (e) {
         debugPrint('Error deleting transaction from Firestore: $e');
@@ -221,6 +227,47 @@ class TransactionProvider extends ChangeNotifier {
         _totalExpense -= transaction.amount;
       }
       notifyListeners();
+    }
+  }
+
+  Future<void> undoDelete(Transaction transaction, int index) async {
+    try {
+      if (_useFirestore && _auth.currentUser != null) {
+        final userId = _auth.currentUser!.uid;
+        final transactionMap = transaction.toMap();
+        transactionMap.remove('id');
+
+        final docRef = await _firestore
+            .collection('users')
+            .doc(userId)
+            .collection('transactions')
+            .add(transactionMap);
+
+        transaction = Transaction(
+          id: docRef.id,
+          title: transaction.title,
+          subtitle: transaction.subtitle,
+          amount: transaction.amount,
+          type: transaction.type,
+          category: transaction.category,
+          icon: transaction.icon,
+          iconBackgroundColor: transaction.iconBackgroundColor,
+          timestamp: transaction.timestamp,
+        );
+      } else {
+        await _db.insertTransaction(transaction.toMap());
+      }
+
+      _transactions.insert(index, transaction);
+      if (transaction.type == 'income') {
+        _totalIncome += transaction.amount;
+      } else {
+        _totalExpense += transaction.amount;
+      }
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error undoing delete: $e');
+      rethrow;
     }
   }
 

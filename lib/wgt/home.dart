@@ -1,5 +1,6 @@
 import 'package:cipherschools_flutter_assignment/core/assets.dart';
 import 'package:cipherschools_flutter_assignment/models/category_icon.dart';
+import 'package:cipherschools_flutter_assignment/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../prov/transaction.dart';
@@ -259,11 +260,54 @@ class TransactionList extends StatelessWidget {
               ),
               onDismissed: (direction) {
                 provider.deleteTransaction(transaction);
+                bool isUndoPressed = false;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('${transaction.title} deleted')),
+                  SnackBar(
+                    duration: const Duration(seconds: 2),
+                    content: StatefulBuilder(
+                      builder: (context, setState) {
+                        return Row(
+                          children: [
+                            Text('${transaction.title} deleted'),
+                            const Spacer(),
+                            TextButton(
+                              onPressed: () async {
+                                if (isUndoPressed == false) {
+                                  isUndoPressed = true;
+                                  await Future.delayed(Duration(seconds: 1));
+                                  provider.undoDelete(transaction, index);
+                                  ScaffoldMessenger.of(
+                                    context,
+                                  ).hideCurrentSnackBar();
+                                } else {
+                                  isUndoPressed = true;
+                                  ScaffoldMessenger.of(
+                                    context,
+                                  ).hideCurrentSnackBar();
+                                }
+                              },
+                              child: Text(
+                                'Undo',
+                                style: TextStyle(
+                                  color:
+                                      isUndoPressed
+                                          ? Colors.grey
+                                          : Colors.greenAccent,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
                 );
               },
               child: TransactionItem(
+                type: transaction.type,
+                category: transaction.category,
+                timestamp: transaction.timestamp,
+                index: index,
                 icon: transaction.icon,
                 title: transaction.title,
                 subtitle: transaction.subtitle,
@@ -271,6 +315,7 @@ class TransactionList extends StatelessWidget {
                 time:
                     '${transaction.timestamp.hour}:${transaction.timestamp.minute.toString().padLeft(2, '0')}',
                 iconBackgroundColor: transaction.iconBackgroundColor,
+                transaction: transaction,
               ),
             );
           },
@@ -287,6 +332,11 @@ class TransactionItem extends StatelessWidget {
   final String subtitle;
   final double amount;
   final String time;
+  final int index;
+  final String type;
+  final String category;
+  final DateTime timestamp;
+  final Transaction transaction;
 
   const TransactionItem({
     super.key,
@@ -296,6 +346,11 @@ class TransactionItem extends StatelessWidget {
     required this.subtitle,
     required this.amount,
     required this.time,
+    required this.index,
+    required this.type,
+    required this.category,
+    required this.timestamp,
+    required this.transaction,
   });
 
   @override
@@ -380,6 +435,63 @@ class TransactionItem extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(width: 8),
+          Consumer<TransactionProvider>(
+            builder: (context, provider, child) {
+              return IconButton(
+                icon: const Icon(
+                  Icons.delete,
+                  color: Color(0xFFFD3C4A),
+                  size: 24,
+                ),
+                onPressed: () {
+                  provider.deleteTransaction(transaction);
+                  bool isUndoPressed = false;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      duration: const Duration(seconds: 2),
+                      content: StatefulBuilder(
+                        builder: (context, setState) {
+                          return Row(
+                            children: [
+                              Text('${transaction.title} deleted'),
+                              const Spacer(),
+                              TextButton(
+                                onPressed: () async {
+                                  if (isUndoPressed == false) {
+                                    isUndoPressed = true;
+                                    await Future.delayed(Duration(seconds: 1));
+                                    provider.undoDelete(transaction, index);
+                                    ScaffoldMessenger.of(
+                                      context,
+                                    ).hideCurrentSnackBar();
+                                  } else {
+                                    isUndoPressed = true;
+                                    ScaffoldMessenger.of(
+                                      context,
+                                    ).hideCurrentSnackBar();
+                                  }
+                                },
+                                child: Text(
+                                  'Undo',
+                                  style: TextStyle(
+                                    color:
+                                        isUndoPressed
+                                            ? Colors.grey
+                                            : Colors.greenAccent,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
           ),
         ],
       ),

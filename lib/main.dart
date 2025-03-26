@@ -4,6 +4,7 @@ import 'package:cipherschools_flutter_assignment/prov/navigation.dart';
 import 'package:cipherschools_flutter_assignment/prov/onboarding.dart';
 import 'package:cipherschools_flutter_assignment/prov/transaction.dart';
 import 'package:cipherschools_flutter_assignment/prov/home_screen.dart';
+import 'package:cipherschools_flutter_assignment/ui/home.dart';
 import 'package:cipherschools_flutter_assignment/ui/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
