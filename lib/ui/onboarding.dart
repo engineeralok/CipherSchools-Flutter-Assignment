@@ -2,6 +2,7 @@ import 'package:cipherschools_flutter_assignment/core/assets.dart';
 import 'package:cipherschools_flutter_assignment/prov/navigation.dart';
 import 'package:cipherschools_flutter_assignment/ui/auth.dart';
 import 'package:cipherschools_flutter_assignment/ui/home.dart';
+import 'package:cipherschools_flutter_assignment/ui/home_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,7 @@ class SplashScreenState extends State<SplashScreen> {
             builder:
                 (context) =>
                     navigationProvider.isUserLoggedIn
-                        ? const HomeScreen()
+                        ? const HomeScreenWrapper()
                         : const WalkthroughScreen(),
           ),
         );
